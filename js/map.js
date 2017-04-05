@@ -95,9 +95,32 @@ function renderAuthors(authors) {
   document.querySelector('.tokyo__pin-map').appendChild(fragment);
 }
 
+function renderAuthorInDialogPanel(author) {
+  var newPanel = document.body.querySelector('#lodge-template').content.cloneNode(true);
+  newPanel.querySelector('.lodge__title').textContent = author.offer.title;
+  newPanel.querySelector('.lodge__address').textContent = author.offer.address;
+  newPanel.querySelector('.lodge__price').textContent = author.offer.price + '&#x20bd;/ночь';
+  newPanel.querySelector('.lodge__type').textContent = author.offer.type; // TODO
+  newPanel.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + author.offer.guests + ' гостей в ' + author.offer.rooms + ' комнатах';
+  newPanel.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + author.offer.checkin + ', выезд до ' + author.offer.checkout;
+  newPanel.querySelector('.lodge__description').textContent = author.offer.description;
+
+  var featuresBlock = newPanel.querySelector('.lodge__features');
+  for (var i = 0; i < author.offer.features.length; i++) {
+    var span = document.createElement('span');
+    span.classList.add('feature__image');
+    span.classList.add('feature__image--' + author.offer.features[i]);
+    featuresBlock.appendChild(span);
+  }
+
+  // TODO replace avatar
+  var dialog = document.body.querySelector('#offer-dialog');
+  var panelToReplace = dialog.querySelector('.dialog__panel');
+  dialog.replaceChild(newPanel, panelToReplace);
+}
+
 var authors = generateAuthors();
+window.console.log(authors);
 renderAuthors(authors);
+renderAuthorInDialogPanel(authors[0]);
 
-// 3. Put those blocks into block .tokyo__pin-map using DocumentFragment.
-
-// 4. Put 1st element of the array into a block .dialog__panel using template #lodge-template.
