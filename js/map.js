@@ -1,9 +1,14 @@
 'use strict';
 
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var TYPES = ['flat', 'house', 'bungalo'];
 var CHECKIN_OUT_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var TYPES = ['flat', 'house', 'bungalo'];
+var TYPES_TO_ACCOMODATION_NAME = {
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
 
 function getRandomElement(array, shiftElement) {
   do {
@@ -43,17 +48,21 @@ function generateAuthors() {
   var numberOfAuthors = 8;
   var result = [];
   for (var i = 0; i < numberOfAuthors; i++) {
+    var x = generateRandomNumber(300, 900);
+    var y = generateRandomNumber(100, 500);
+    var rooms = generateRandomNumber(1, 5);
+
     result.push({
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
       },
       offer: {
         title: getRandomElement(Array.from(TITLES), true),
-        address: '{{location.x}}, {{location.y}}',
+        address: x + ', ' + y,
         price: generateRandomNumber(1000, 1000000),
         type: getRandomElement(TYPES, false),
-        rooms: generateRandomNumber(1, 5),
-        guests: generateRandomNumber(2, 8),
+        rooms: rooms,
+        guests: generateRandomNumber(rooms, rooms * 2),
         checkin: getRandomElement(CHECKIN_OUT_TIMES, false),
         checkout: getRandomElement(CHECKIN_OUT_TIMES, false),
         features: generateRandomArray(FEATURES),
@@ -61,8 +70,8 @@ function generateAuthors() {
         photos: []
       },
       location: {
-        x: generateRandomNumber(300, 900),
-        y: generateRandomNumber(100, 500)
+        x: x,
+        y: y
       }
     });
   }
@@ -99,8 +108,8 @@ function renderAuthorInDialogPanel(author) {
   var newPanel = document.body.querySelector('#lodge-template').content.cloneNode(true);
   newPanel.querySelector('.lodge__title').textContent = author.offer.title;
   newPanel.querySelector('.lodge__address').textContent = author.offer.address;
-  newPanel.querySelector('.lodge__price').textContent = author.offer.price + '&#x20bd;/ночь';
-  newPanel.querySelector('.lodge__type').textContent = author.offer.type; // TODO
+  newPanel.querySelector('.lodge__price').innerHTML = author.offer.price + '&#x20bd;/ночь';
+  newPanel.querySelector('.lodge__type').textContent = TYPES_TO_ACCOMODATION_NAME[author.offer.type];
   newPanel.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + author.offer.guests + ' гостей в ' + author.offer.rooms + ' комнатах';
   newPanel.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + author.offer.checkin + ', выезд до ' + author.offer.checkout;
   newPanel.querySelector('.lodge__description').textContent = author.offer.description;
@@ -113,14 +122,14 @@ function renderAuthorInDialogPanel(author) {
     featuresBlock.appendChild(span);
   }
 
-  // TODO replace avatar
   var dialog = document.body.querySelector('#offer-dialog');
+  dialog.querySelector('.dialog__title > img').src = author.author.avatar;
+
   var panelToReplace = dialog.querySelector('.dialog__panel');
   dialog.replaceChild(newPanel, panelToReplace);
 }
 
 var authors = generateAuthors();
-window.console.log(authors);
 renderAuthors(authors);
 renderAuthorInDialogPanel(authors[0]);
 
