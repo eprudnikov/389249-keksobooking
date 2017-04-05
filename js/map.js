@@ -71,10 +71,13 @@ function generateAuthors() {
 }
 
 function renderAuthor(author) {
+  var pinWidth = 56; // px
+  var pinHeight = 75; // px
+
   var div = document.createElement('div');
   div.classList.add('pin');
-  div.style.left = '130px';
-  div.style.top = '110px';
+  div.style.left = (author.location.x + Math.round(pinWidth / 2)) + 'px';
+  div.style.top = (author.location.y + pinHeight) + 'px';
   var img = document.createElement('img');
   img.src = author.author.avatar;
   img.classList.add('rounded');
@@ -86,7 +89,7 @@ function renderAuthor(author) {
 
 function renderAuthors(authors) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < 1; i++) { // authors.length
+  for (var i = 0; i < authors.length; i++) {
     fragment.appendChild(renderAuthor(authors[i]));
   }
   document.querySelector('.tokyo__pin-map').appendChild(fragment);
