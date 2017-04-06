@@ -1,6 +1,14 @@
 'use strict';
 
-var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+var TITLES = [
+  'Большая уютная квартира',
+  'Маленькая неуютная квартира',
+  'Огромный прекрасный дворец',
+  'Маленький ужасный дворец',
+  'Красивый гостевой домик',
+  'Некрасивый негостеприимный домик',
+  'Уютное бунгало далеко от моря',
+  'Неуютное бунгало по колено в воде'];
 var CHECKIN_OUT_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var TYPES = ['flat', 'house', 'bungalo'];
@@ -10,9 +18,13 @@ var TYPES_TO_ACCOMODATION_NAME = {
   bungalo: 'Бунгало'
 };
 
+function generateRandomNumber(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
 function getRandomElement(array, shiftElement) {
   do {
-    var randomIndex = Math.floor(Math.random() * array.length);
+    var randomIndex = generateRandomNumber(0, array.length - 1);
     var randomElement = array[randomIndex];
 
     if (shiftElement) {
@@ -23,12 +35,8 @@ function getRandomElement(array, shiftElement) {
   return randomElement;
 }
 
-function generateRandomNumber(min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-}
-
 function generateRandomArray(baseArray) {
-  var elementsNumber = Math.floor(Math.random() * baseArray.length);
+  var elementsNumber = generateRandomNumber(0, baseArray.length - 1);
   var randomArray = [];
 
   for (var i = 0; i < elementsNumber; i++) {
