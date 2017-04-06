@@ -22,26 +22,28 @@ function generateRandomNumber(min, max) {
   return Math.round(Math.random() * (max - min) + min);
 }
 
-function getRandomElement(array, shiftElement) {
+function getRandomElement(array) {
+  var randomIndex = generateRandomNumber(0, array.length - 1);
+  return array[randomIndex];
+}
+
+function popRandomElement(array) {
   do {
     var randomIndex = generateRandomNumber(0, array.length - 1);
     var randomElement = array[randomIndex];
-
-    if (shiftElement) {
-      array[randomIndex] = null;
-    }
+    array[randomIndex] = null;
   } while (!randomElement);
 
   return randomElement;
 }
 
 function generateRandomArray(baseArray) {
-  var elementsNumber = generateRandomNumber(0, baseArray.length - 1);
+  var elementsCount = generateRandomNumber(0, baseArray.length - 1);
   var randomArray = [];
 
-  for (var i = 0; i < elementsNumber; i++) {
+  for (var i = 0; i < elementsCount; i++) {
     for (;;) {
-      var randomElement = getRandomElement(baseArray, false);
+      var randomElement = getRandomElement(baseArray);
       if (randomArray.indexOf(randomElement) === -1) {
         randomArray.push(randomElement);
         break;
@@ -53,9 +55,10 @@ function generateRandomArray(baseArray) {
 }
 
 function generateAuthors() {
-  var numberOfAuthors = 8;
+  var authorsCount = 8;
+  var uniqueTitles = TITLES.slice(0); // uniqueTitles array going to be modified
   var result = [];
-  for (var i = 0; i < numberOfAuthors; i++) {
+  for (var i = 0; i < authorsCount; i++) {
     var x = generateRandomNumber(300, 900);
     var y = generateRandomNumber(100, 500);
     var rooms = generateRandomNumber(1, 5);
@@ -65,14 +68,14 @@ function generateAuthors() {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
       },
       offer: {
-        title: getRandomElement(Array.from(TITLES), true),
+        title: popRandomElement(uniqueTitles),
         address: x + ', ' + y,
         price: generateRandomNumber(1000, 1000000),
         type: getRandomElement(TYPES, false),
         rooms: rooms,
         guests: generateRandomNumber(rooms, rooms * 2),
-        checkin: getRandomElement(CHECKIN_OUT_TIMES, false),
-        checkout: getRandomElement(CHECKIN_OUT_TIMES, false),
+        checkin: getRandomElement(CHECKIN_OUT_TIMES),
+        checkout: getRandomElement(CHECKIN_OUT_TIMES),
         features: generateRandomArray(FEATURES),
         description: '',
         photos: []
