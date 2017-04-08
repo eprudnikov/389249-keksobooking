@@ -3,8 +3,8 @@
 var PIN_CLASS = 'pin';
 var ACTIVE_PIN_CLASS = 'pin--active';
 
-var ENTER_KEYCODE = 13;
-var ESC_KEYCODE = 27;
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
 
 var TITLES = [
   'Большая уютная квартира',
@@ -124,8 +124,10 @@ function placePinsOnMap(authors) {
   document.querySelector('.tokyo__pin-map').appendChild(fragment);
 }
 
-var keydownEscHandler = function () {
-  closeOfferDialog();
+var keydownEscHandler = function (evt) {
+  if (evt.keyCode === ESC_KEY_CODE) {
+    closeOfferDialog();
+  }
 };
 
 function openOfferDialog(author) {
@@ -185,28 +187,49 @@ function closeOfferDialog() {
   }
 }
 
-var clickPinHandler = function (evt) {
-  var currentPin = evt.currentTarget;
-  currentPin.classList.add(ACTIVE_PIN_CLASS);
+function activatePin(pin) {
+  pin.classList.add(ACTIVE_PIN_CLASS);
   if (activePin) {
     activePin.classList.remove(ACTIVE_PIN_CLASS);
   }
-  activePin = currentPin;
+  activePin = pin;
+}
+
+var clickPinHandler = function (evt) {
+  activatePin(evt.currentTarget);
 
   var avatar = activePin.childNodes[0].src;
   var author = findAuthor(avatar);
   openOfferDialog(author);
 };
 
-var clickCloseButton = function () {
+var enterKeydownCloseButtonHandler = function (evt) {
+  if (evt.keyCode === ENTER_KEY_CODE) {
+    closeOfferDialog();
+  }
+};
+
+var enterKeydownPinHandler = function (evt) {
+  if (evt.keyCode === ENTER_KEY_CODE) {
+    activatePin(evt.currentTarget);
+
+    var avatar = activePin.childNodes[0].src;
+    var author = findAuthor(avatar);
+    openOfferDialog(author);
+  }
+};
+
+var clickCloseButtonHandler = function () {
   closeOfferDialog();
 };
 
 var pins = document.body.querySelectorAll('.pin');
 for (var i = 0; i < pins.length; i++) {
   pins[i].addEventListener('click', clickPinHandler);
+  pins[i].addEventListener('keydown', enterKeydownPinHandler);
 }
 
 var closeButton = document.body.querySelector('.dialog__close');
-closeButton.addEventListener('click', clickCloseButton);
-
+// Following handlers added only once and are not removed dynamically because when dialog is closed, they are not reacts
+closeButton.addEventListener('click', clickCloseButtonHandler);
+closeButton.addEventListener('keydown', enterKeydownCloseButtonHandler);
