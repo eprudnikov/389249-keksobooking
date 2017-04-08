@@ -3,6 +3,9 @@
 var PIN_CLASS = 'pin';
 var ACTIVE_PIN_CLASS = 'pin--active';
 
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
+
 var TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -95,7 +98,7 @@ function generateAuthors() {
   return result;
 }
 
-function renderAuthor(author) {
+function renderPin(author) {
   var pinWidth = 56; // px
   var pinHeight = 75; // px
 
@@ -103,6 +106,7 @@ function renderAuthor(author) {
   div.classList.add(PIN_CLASS);
   div.style.left = (author.location.x + Math.round(pinWidth / 2)) + 'px';
   div.style.top = (author.location.y + pinHeight) + 'px';
+  div.tabIndex = 0;
   var img = document.createElement('img');
   img.src = author.author.avatar;
   img.classList.add('rounded');
@@ -112,15 +116,19 @@ function renderAuthor(author) {
   return div;
 }
 
-function renderAuthors(authors) {
+function placePinsOnMap(authors) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < authors.length; i++) {
-    fragment.appendChild(renderAuthor(authors[i]));
+    fragment.appendChild(renderPin(authors[i]));
   }
   document.querySelector('.tokyo__pin-map').appendChild(fragment);
 }
 
-function renderAuthorInDialogPanel(author) {
+var keydownEscHandler = function () {
+  closeOfferDialog();
+};
+
+function openOfferDialog(author) {
   if (!author) {
     return;
   }
@@ -146,11 +154,14 @@ function renderAuthorInDialogPanel(author) {
 
   var panelToReplace = offerDialog.querySelector('.dialog__panel');
   offerDialog.replaceChild(newPanel, panelToReplace);
+
+  offerDialog.style.display = 'block';
+  document.addEventListener('keydown', keydownEscHandler);
 }
 
 var authors = generateAuthors();
-renderAuthors(authors);
-renderAuthorInDialogPanel(authors[0]);
+placePinsOnMap(authors);
+openOfferDialog(authors[0]);
 
 // Map navigation
 var activePin;
@@ -164,6 +175,16 @@ function findAuthor(avatar) {
   return null;
 }
 
+function closeOfferDialog() {
+  document.removeEventListener('keydown', keydownEscHandler);
+
+  offerDialog.style.display = 'none';
+  if (activePin) {
+    activePin.classList.remove(ACTIVE_PIN_CLASS);
+    activePin = null;
+  }
+}
+
 var clickPinHandler = function (evt) {
   var currentPin = evt.currentTarget;
   currentPin.classList.add(ACTIVE_PIN_CLASS);
@@ -174,16 +195,11 @@ var clickPinHandler = function (evt) {
 
   var avatar = activePin.childNodes[0].src;
   var author = findAuthor(avatar);
-  renderAuthorInDialogPanel(author);
-  offerDialog.style.display = 'block';
+  openOfferDialog(author);
 };
 
 var clickCloseButton = function () {
-  offerDialog.style.display = 'none';
-  if (activePin) {
-    activePin.classList.remove(ACTIVE_PIN_CLASS);
-    activePin = null;
-  }
+  closeOfferDialog();
 };
 
 var pins = document.body.querySelectorAll('.pin');
