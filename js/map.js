@@ -1,6 +1,7 @@
 'use strict';
 
 var PIN_CLASS = 'pin';
+var ACTIVE_PIN_CLASS = 'pin--active';
 
 var TITLES = [
   'Большая уютная квартира',
@@ -19,6 +20,8 @@ var TYPES_TO_ACCOMODATION_NAME = {
   house: 'Дом',
   bungalo: 'Бунгало'
 };
+
+var offerDialog = document.body.querySelector('#offer-dialog');
 
 function generateRandomNumber(min, max) {
   return Math.round(Math.random() * (max - min) + min);
@@ -139,11 +142,10 @@ function renderAuthorInDialogPanel(author) {
     featuresBlock.appendChild(span);
   }
 
-  var dialog = document.body.querySelector('#offer-dialog');
-  dialog.querySelector('.dialog__title > img').src = author.author.avatar;
+  offerDialog.querySelector('.dialog__title > img').src = author.author.avatar;
 
-  var panelToReplace = dialog.querySelector('.dialog__panel');
-  dialog.replaceChild(newPanel, panelToReplace);
+  var panelToReplace = offerDialog.querySelector('.dialog__panel');
+  offerDialog.replaceChild(newPanel, panelToReplace);
 }
 
 var authors = generateAuthors();
@@ -164,20 +166,31 @@ function findAuthor(avatar) {
 
 var clickPinHandler = function (evt) {
   var currentPin = evt.currentTarget;
-  var classActive = 'pin--active';
-  currentPin.classList.add(classActive);
+  currentPin.classList.add(ACTIVE_PIN_CLASS);
   if (activePin) {
-    activePin.classList.remove(classActive);
+    activePin.classList.remove(ACTIVE_PIN_CLASS);
   }
   activePin = currentPin;
 
   var avatar = activePin.childNodes[0].src;
   var author = findAuthor(avatar);
   renderAuthorInDialogPanel(author);
+  offerDialog.style.display = 'block';
+};
+
+var clickCloseButton = function () {
+  offerDialog.style.display = 'none';
+  if (activePin) {
+    activePin.classList.remove(ACTIVE_PIN_CLASS);
+    activePin = null;
+  }
 };
 
 var pins = document.body.querySelectorAll('.pin');
 for (var i = 0; i < pins.length; i++) {
   pins[i].addEventListener('click', clickPinHandler);
 }
+
+var closeButton = document.body.querySelector('.dialog__close');
+closeButton.addEventListener('click', clickCloseButton);
 
