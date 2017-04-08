@@ -1,5 +1,7 @@
 'use strict';
 
+var PIN_CLASS = 'pin';
+
 var TITLES = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -95,7 +97,7 @@ function renderAuthor(author) {
   var pinHeight = 75; // px
 
   var div = document.createElement('div');
-  div.classList.add('pin');
+  div.classList.add(PIN_CLASS);
   div.style.left = (author.location.x + Math.round(pinWidth / 2)) + 'px';
   div.style.top = (author.location.y + pinHeight) + 'px';
   var img = document.createElement('img');
@@ -116,6 +118,10 @@ function renderAuthors(authors) {
 }
 
 function renderAuthorInDialogPanel(author) {
+  if (!author) {
+    return;
+  }
+
   var newPanel = document.body.querySelector('#lodge-template').content.cloneNode(true);
   newPanel.querySelector('.lodge__title').textContent = author.offer.title;
   newPanel.querySelector('.lodge__address').textContent = author.offer.address;
@@ -143,4 +149,35 @@ function renderAuthorInDialogPanel(author) {
 var authors = generateAuthors();
 renderAuthors(authors);
 renderAuthorInDialogPanel(authors[0]);
+
+// Map navigation
+var activePin;
+
+function findAuthor(avatar) {
+  for (var i = 0; i < authors.length; i++) {
+    if (avatar.endsWith(authors[i].author.avatar)) {
+      return authors[i];
+    }
+  }
+  return null;
+}
+
+var clickPinHandler = function (evt) {
+  var currentPin = evt.currentTarget;
+  var classActive = 'pin--active';
+  currentPin.classList.add(classActive);
+  if (activePin) {
+    activePin.classList.remove(classActive);
+  }
+  activePin = currentPin;
+
+  var avatar = activePin.childNodes[0].src;
+  var author = findAuthor(avatar);
+  renderAuthorInDialogPanel(author);
+};
+
+var pins = document.body.querySelectorAll('.pin');
+for (var i = 0; i < pins.length; i++) {
+  pins[i].addEventListener('click', clickPinHandler);
+}
 
