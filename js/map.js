@@ -24,9 +24,9 @@ var TYPES_TO_ACCOMODATION_NAME = {
   bungalo: 'Бунгало'
 };
 var MIN_PRICES = {
-  'Квартира': 1000,
-  'Лачуга': 0,
-  'Дворец': 10000
+  'apartment': 1000,
+  'hut': 0,
+  'palace': 10000
 };
 
 var offerDialog = document.body.querySelector('#offer-dialog');
@@ -249,9 +249,23 @@ timeSelector.addEventListener('change', function () {
 var typeSelector = form.querySelector('#type');
 var priceInput = form.querySelector('#price');
 typeSelector.addEventListener('change', function () {
-  var minPrice = MIN_PRICES[typeSelector.options[typeSelector.selectedIndex].textContent];
+  var minPrice = MIN_PRICES[typeSelector.options[typeSelector.selectedIndex].value];
   if (typeof minPrice === 'number') { // to make sure that 0 will be true
     priceInput.placeholder = minPrice;
     priceInput.min = minPrice;
   }
 });
+
+var roomNumberSelector = form.querySelector('#room_number');
+var capacitySelector = form.querySelector('#capacity');
+var noGuestsOption = capacitySelector.querySelector('option[value="0"]');
+var threeGuestsOption = capacitySelector.querySelector('option[value="3"]');
+var limitGuests = function () {
+  if (roomNumberSelector.options[roomNumberSelector.selectedIndex].value > 1) {
+    capacitySelector.selectedIndex = threeGuestsOption.index;
+    return;
+  }
+  capacitySelector.selectedIndex = noGuestsOption.index;
+};
+limitGuests();
+roomNumberSelector.addEventListener('change', limitGuests);
