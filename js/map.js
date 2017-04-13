@@ -233,3 +233,9 @@ var closeButton = document.body.querySelector('.dialog__close');
 // Following handlers added only once and are not removed dynamically because when dialog is closed, they are not reacts
 closeButton.addEventListener('click', clickCloseButtonHandler);
 closeButton.addEventListener('keydown', enterKeydownCloseButtonHandler);
+
+var timeSelector = document.body.querySelector('#time');
+var timeoutSelector = document.body.querySelector('#timeout');
+timeSelector.addEventListener('change', function () {
+  timeoutSelector.selectedIndex = timeSelector.selectedIndex;
+});
