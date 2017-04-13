@@ -23,6 +23,11 @@ var TYPES_TO_ACCOMODATION_NAME = {
   house: 'Дом',
   bungalo: 'Бунгало'
 };
+var MIN_PRICES = {
+  'Квартира': 1000,
+  'Лачуга': 0,
+  'Дворец': 10000
+};
 
 var offerDialog = document.body.querySelector('#offer-dialog');
 
@@ -234,8 +239,19 @@ var closeButton = document.body.querySelector('.dialog__close');
 closeButton.addEventListener('click', clickCloseButtonHandler);
 closeButton.addEventListener('keydown', enterKeydownCloseButtonHandler);
 
-var timeSelector = document.body.querySelector('#time');
-var timeoutSelector = document.body.querySelector('#timeout');
+var form = document.body.querySelector('.notice__form');
+var timeSelector = form.querySelector('#time');
+var timeoutSelector = form.querySelector('#timeout');
 timeSelector.addEventListener('change', function () {
   timeoutSelector.selectedIndex = timeSelector.selectedIndex;
+});
+
+var typeSelector = form.querySelector('#type');
+var priceInput = form.querySelector('#price');
+typeSelector.addEventListener('change', function () {
+  var minPrice = MIN_PRICES[typeSelector.options[typeSelector.selectedIndex].textContent];
+  if (typeof minPrice === 'number') { // to make sure that 0 will be true
+    priceInput.placeholder = minPrice;
+    priceInput.min = minPrice;
+  }
 });
