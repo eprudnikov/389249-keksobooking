@@ -28,6 +28,7 @@ var MIN_PRICES = {
   'hut': 0,
   'palace': 10000
 };
+var INVALID_ELEMENT_STYLE = 'border: 1px solid red';
 
 var offerDialog = document.body.querySelector('#offer-dialog');
 
@@ -269,3 +270,12 @@ var limitGuests = function () {
 };
 limitGuests();
 roomNumberSelector.addEventListener('change', limitGuests);
+
+var resetBorder = function (evt) {
+  evt.target.style = 'border-width: 0px';
+  evt.target.removeEventListener('change', resetBorder);
+};
+form.addEventListener('invalid', function (evt) {
+  evt.target.style = INVALID_ELEMENT_STYLE;
+  evt.target.addEventListener('change', resetBorder);
+}, true);
