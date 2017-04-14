@@ -241,35 +241,36 @@ closeButton.addEventListener('click', clickCloseButtonHandler);
 closeButton.addEventListener('keydown', enterKeydownCloseButtonHandler);
 
 var form = document.body.querySelector('.notice__form');
-var timeSelector = form.querySelector('#time');
-var timeoutSelector = form.querySelector('#timeout');
-timeSelector.addEventListener('change', function () {
-  timeoutSelector.selectedIndex = timeSelector.selectedIndex;
+var timeSelect = form.querySelector('#time');
+var timeoutSelect = form.querySelector('#timeout');
+timeSelect.addEventListener('change', function () {
+  timeoutSelect.selectedIndex = timeSelect.selectedIndex;
 });
 
-var typeSelector = form.querySelector('#type');
+var typeSelect = form.querySelector('#type');
 var priceInput = form.querySelector('#price');
-typeSelector.addEventListener('change', function () {
-  var minPrice = MIN_PRICES[typeSelector.options[typeSelector.selectedIndex].value];
+var setMinPrice = function () {
+  var minPrice = MIN_PRICES[typeSelect.options[typeSelect.selectedIndex].value];
   if (typeof minPrice === 'number') { // to make sure that 0 will be true
     priceInput.placeholder = minPrice;
     priceInput.min = minPrice;
   }
-});
+};
+typeSelect.addEventListener('change', setMinPrice);
 
-var roomNumberSelector = form.querySelector('#room_number');
-var capacitySelector = form.querySelector('#capacity');
-var noGuestsOption = capacitySelector.querySelector('option[value="0"]');
-var threeGuestsOption = capacitySelector.querySelector('option[value="3"]');
+var roomNumberSelect = form.querySelector('#room_number');
+var capacitySelect = form.querySelector('#capacity');
+var noGuestsOption = capacitySelect.querySelector('option[value="0"]');
+var threeGuestsOption = capacitySelect.querySelector('option[value="3"]');
 var limitGuests = function () {
-  if (roomNumberSelector.options[roomNumberSelector.selectedIndex].value > 1) {
-    capacitySelector.selectedIndex = threeGuestsOption.index;
+  if (roomNumberSelect.options[roomNumberSelect.selectedIndex].value > 1) {
+    capacitySelect.selectedIndex = threeGuestsOption.index;
     return;
   }
-  capacitySelector.selectedIndex = noGuestsOption.index;
+  capacitySelect.selectedIndex = noGuestsOption.index;
 };
 limitGuests();
-roomNumberSelector.addEventListener('change', limitGuests);
+roomNumberSelect.addEventListener('change', limitGuests);
 
 var resetBorder = function (evt) {
   evt.target.style = 'border-width: 0px';
