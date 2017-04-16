@@ -11,7 +11,7 @@
 
     var avatar = activePin.childNodes[0].src;
     var author = window.findAuthor(avatar);
-    window.openOfferDialog(author);
+    window.openCard(author);
   };
 
   var enterKeydownPinHandler = function (evt) {
@@ -20,7 +20,7 @@
 
       var avatar = activePin.childNodes[0].src;
       var author = window.findAuthor(avatar);
-      window.openOfferDialog(author);
+      window.openCard(author);
     }
   };
 

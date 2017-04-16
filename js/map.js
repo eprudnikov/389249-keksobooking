@@ -6,5 +6,5 @@
 
   window.authors = window.generateAuthors();
   window.placePinsOnMap(window.authors);
-  window.openOfferDialog(window.authors[0]);
+  window.openCard(window.authors[0]);
 }());
