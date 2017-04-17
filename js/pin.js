@@ -5,6 +5,8 @@
   var ACTIVE_PIN_CLASS = 'pin--active';
   var PIN_WIDTH = 56; // px
   var PIN_HEIGHT = 75; // px
+  var AVATAR_WIDTH = 40; // px
+  var AVATAR_HEIGHT = 40; // px
 
   var activePin;
 
@@ -35,8 +37,8 @@
     var img = document.createElement('img');
     img.src = author.author.avatar;
     img.classList.add('rounded');
-    img.width = 40;
-    img.height = 40;
+    img.width = AVATAR_WIDTH;
+    img.height = AVATAR_HEIGHT;
     div.appendChild(img);
     return div;
   }
