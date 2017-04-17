@@ -1,6 +1,9 @@
 'use strict';
 
-(function () {
+window.pin = (function () {
+  var ENTER_KEY_CODE = 13;
+  var ESC_KEY_CODE = 27;
+
   var PIN_CLASS = 'pin';
   var ACTIVE_PIN_CLASS = 'pin--active';
   var PIN_WIDTH = 56; // px
@@ -14,17 +17,17 @@
     activatePin(evt.currentTarget);
 
     var avatar = activePin.childNodes[0].src;
-    var author = window.findAuthor(avatar);
-    window.openCard(author);
+    var author = window.data.findAuthor(avatar);
+    window.card.openCard(author);
   };
 
   var enterKeydownPinHandler = function (evt) {
-    if (evt.keyCode === window.ENTER_KEY_CODE) {
+    if (evt.keyCode === ENTER_KEY_CODE) {
       activatePin(evt.currentTarget);
 
       var avatar = activePin.childNodes[0].src;
-      var author = window.findAuthor(avatar);
-      window.openCard(author);
+      var author = window.data.findAuthor(avatar);
+      window.card.openCard(author);
     }
   };
 
@@ -43,7 +46,7 @@
     return div;
   }
 
-  window.placePinsOnMap = function (authors) {
+  var placePinsOnMap = function (authors) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < authors.length; i++) {
       var pin = renderPin(authors[i]);
@@ -63,10 +66,17 @@
     activePin = pin;
   }
 
-  window.deactivePin = function () {
+  var deactivePin = function () {
     if (activePin) {
       activePin.classList.remove(ACTIVE_PIN_CLASS);
       activePin = null;
     }
+  };
+
+  return {
+    ENTER_KEY_CODE: ENTER_KEY_CODE,
+    ESC_KEY_CODE: ESC_KEY_CODE,
+    placePinsOnMap: placePinsOnMap,
+    deactivePin: deactivePin
   };
 }());

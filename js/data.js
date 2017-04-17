@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.data = (function () {
   var TITLES = [
     'Большая уютная квартира',
     'Маленькая неуютная квартира',
@@ -13,6 +13,8 @@
   var CHECKIN_OUT_TIMES = ['12:00', '13:00', '14:00'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var TYPES = ['flat', 'house', 'bungalo'];
+
+  var authors;
 
   function generateRandomNumber(min, max) {
     return Math.round(Math.random() * (max - min) + min);
@@ -50,7 +52,7 @@
     return randomArray;
   }
 
-  window.generateAuthors = function () {
+  function generateAuthors() {
     var authorsCount = 8;
     var uniqueTitles = TITLES.slice(0); // uniqueTitles array going to be modified
     var result = [];
@@ -83,15 +85,21 @@
       });
     }
 
+    authors = result;
     return result;
-  };
+  }
 
-  window.findAuthor = function (avatar) {
-    for (var i = 0; i < window.authors.length; i++) {
-      if (avatar.endsWith(window.authors[i].author.avatar)) {
-        return window.authors[i];
+  var findAuthor = function (avatar) {
+    for (var i = 0; authors && i < authors.length; i++) {
+      if (avatar.endsWith(authors[i].author.avatar)) {
+        return authors[i];
       }
     }
     return null;
+  };
+
+  return {
+    authors: generateAuthors(),
+    findAuthor: findAuthor
   };
 }());

@@ -1,6 +1,6 @@
 'use strict';
 
-window.openCard = (function () {
+window.card = (function () {
   var TYPES_TO_ACCOMODATION_NAME = {
     flat: 'Квартира',
     house: 'Дом',
@@ -43,11 +43,11 @@ window.openCard = (function () {
   function closeCard() {
     document.removeEventListener('keydown', keydownEscHandler);
     offerDialog.style.display = 'none';
-    window.deactivePin();
+    window.pin.deactivePin();
   }
 
   var enterKeydownCloseButtonHandler = function (evt) {
-    if (evt.keyCode === window.ENTER_KEY_CODE) {
+    if (evt.keyCode === window.pin.ENTER_KEY_CODE) {
       closeCard();
     }
   };
@@ -57,7 +57,7 @@ window.openCard = (function () {
   };
 
   var keydownEscHandler = function (evt) {
-    if (evt.keyCode === window.ESC_KEY_CODE) {
+    if (evt.keyCode === window.pin.ESC_KEY_CODE) {
       closeCard();
     }
   };
@@ -67,5 +67,7 @@ window.openCard = (function () {
   closeButton.addEventListener('click', clickCloseButtonHandler);
   closeButton.addEventListener('keydown', enterKeydownCloseButtonHandler);
 
-  return openCard;
+  return {
+    openCard: openCard
+  };
 }());
