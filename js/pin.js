@@ -1,9 +1,11 @@
 'use strict';
 
-window.pin = (function () {
-  var ENTER_KEY_CODE = 13;
-  var ESC_KEY_CODE = 27;
+window.contants = {
+  ENTER_KEY_CODE: 13,
+  ESC_KEY_CODE: 27
+};
 
+window.pin = (function () {
   var PIN_CLASS = 'pin';
   var ACTIVE_PIN_CLASS = 'pin--active';
   var PIN_WIDTH = 56; // px
@@ -22,7 +24,7 @@ window.pin = (function () {
   };
 
   var enterKeydownPinHandler = function (evt) {
-    if (evt.keyCode === ENTER_KEY_CODE) {
+    if (evt.keyCode === window.contants.ENTER_KEY_CODE) {
       activatePin(evt.currentTarget);
 
       var avatar = activePin.childNodes[0].src;
@@ -74,8 +76,6 @@ window.pin = (function () {
   };
 
   return {
-    ENTER_KEY_CODE: ENTER_KEY_CODE,
-    ESC_KEY_CODE: ESC_KEY_CODE,
     placePinsOnMap: placePinsOnMap,
     deactivePin: deactivePin
   };
