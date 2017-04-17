@@ -3,6 +3,8 @@
 (function () {
   var PIN_CLASS = 'pin';
   var ACTIVE_PIN_CLASS = 'pin--active';
+  var PIN_WIDTH = 56; // px
+  var PIN_HEIGHT = 75; // px
 
   var activePin;
 
@@ -25,13 +27,10 @@
   };
 
   function renderPin(author) {
-    var pinWidth = 56; // px
-    var pinHeight = 75; // px
-
     var div = document.createElement('div');
     div.classList.add(PIN_CLASS);
-    div.style.left = (author.location.x + Math.round(pinWidth / 2)) + 'px';
-    div.style.top = (author.location.y + pinHeight) + 'px';
+    div.style.left = (author.location.x + Math.round(PIN_WIDTH / 2)) + 'px';
+    div.style.top = (author.location.y + PIN_HEIGHT) + 'px';
     div.tabIndex = 0;
     var img = document.createElement('img');
     img.src = author.author.avatar;
