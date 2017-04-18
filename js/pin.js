@@ -1,6 +1,6 @@
 'use strict';
 
-window.contants = {
+window.constants = {
   ENTER_KEY_CODE: 13,
   ESC_KEY_CODE: 27
 };
@@ -24,7 +24,7 @@ window.pin = (function () {
   };
 
   var enterKeydownPinHandler = function (evt) {
-    if (evt.keyCode === window.contants.ENTER_KEY_CODE) {
+    if (evt.keyCode === window.constants.ENTER_KEY_CODE) {
       activatePin(evt.currentTarget);
 
       var avatar = activePin.childNodes[0].src;

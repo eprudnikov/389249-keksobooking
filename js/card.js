@@ -47,7 +47,7 @@ window.card = (function () {
   }
 
   var enterKeydownCloseButtonHandler = function (evt) {
-    if (evt.keyCode === window.contants.ENTER_KEY_CODE) {
+    if (evt.keyCode === window.constants.ENTER_KEY_CODE) {
       closeCard();
     }
   };
@@ -57,7 +57,7 @@ window.card = (function () {
   };
 
   var keydownEscHandler = function (evt) {
-    if (evt.keyCode === window.contants.ESC_KEY_CODE) {
+    if (evt.keyCode === window.constants.ESC_KEY_CODE) {
       closeCard();
     }
   };
