@@ -57,8 +57,8 @@ window.data = (function () {
     var uniqueTitles = TITLES.slice(0); // uniqueTitles array going to be modified
     var result = [];
     for (var i = 0; i < authorsCount; i++) {
-      var x = generateRandomNumber(300, 900);
-      var y = generateRandomNumber(100, 500);
+      var x = generateRandomNumber(window.constants.MIN_X_POSITION, window.constants.MAX_X_POSITION);
+      var y = generateRandomNumber(window.constants.MIN_Y_POSITION, window.constants.MAX_Y_POSITION);
       var rooms = generateRandomNumber(1, 5);
 
       result.push({
