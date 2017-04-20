@@ -11,26 +11,26 @@
   var addressField = document.body.querySelector('#address');
 
   var pinCoords = {
-    x: 0,
-    y: 0,
+    offsetLeft: 0,
+    offsetTop: 0,
     clientX: 0,
     clientY: 0,
 
     getXPositionOnMap: function () {
-      return pinCoords.x + Math.round(MAIN_PIN_WIDTH / 2);
+      return pinCoords.offsetLeft + Math.round(MAIN_PIN_WIDTH / 2);
     },
 
     getYPositionOnMap: function () {
-      return pinCoords.y + MAIN_PIN_HEIGHT;
+      return pinCoords.offsetTop + MAIN_PIN_HEIGHT;
     },
 
     onPositionUpdate: function (x, y) {
       addressField.value = 'x: ' + x + ', y: ' + y;
     },
 
-    updatePosition: function (x, y, clientX, clientY) {
-      pinCoords.x = x;
-      pinCoords.y = y;
+    updatePosition: function (offsetLeft, offsetTop, clientX, clientY) {
+      pinCoords.offsetLeft = offsetLeft;
+      pinCoords.offsetTop = offsetTop;
       pinCoords.clientX = clientX;
       pinCoords.clientY = clientY;
       if (pinCoords.onPositionUpdate) {
@@ -47,15 +47,13 @@
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var shift = {
-        x: pinCoords.clientX - moveEvt.clientX,
-        y: pinCoords.clientY - moveEvt.clientY
-      };
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      var shiftX = pinCoords.clientX - moveEvt.clientX;
+      var shiftY = pinCoords.clientY - moveEvt.clientY;
+
+      mainPin.style.top = (mainPin.offsetTop - shiftX) + 'px';
+      mainPin.style.left = (mainPin.offsetLeft - shiftY) + 'px';
 
       pinCoords.updatePosition(mainPin.offsetLeft, mainPin.offsetTop, moveEvt.clientX, moveEvt.clientY);
-      // pinCoords.updatePosition(moveEvt.clientX, moveEvt.clientY);
     };
 
     var onMouseUp = function (upEvt) {
