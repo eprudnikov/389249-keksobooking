@@ -1,14 +1,5 @@
 'use strict';
 
-window.constants = {
-  ENTER_KEY_CODE: 13,
-  ESC_KEY_CODE: 27,
-  MIN_X_POSITION: 300,
-  MAX_X_POSITION: 900,
-  MIN_Y_POSITION: 100,
-  MAX_Y_POSITION: 500
-};
-
 window.pin = (function () {
   var PIN_CLASS = 'pin';
   var ACTIVE_PIN_CLASS = 'pin--active';
@@ -40,8 +31,8 @@ window.pin = (function () {
   function renderPin(author) {
     var div = document.createElement('div');
     div.classList.add(PIN_CLASS);
-    div.style.left = (author.location.x + Math.round(PIN_WIDTH / 2)) + 'px';
-    div.style.top = (author.location.y + PIN_HEIGHT) + 'px';
+    div.style.left = (author.location.x - Math.round(PIN_WIDTH / 2)) + 'px';
+    div.style.top = (author.location.y - PIN_HEIGHT) + 'px';
     div.tabIndex = 0;
     var img = document.createElement('img');
     img.src = author.author.avatar;
