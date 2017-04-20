@@ -5,6 +5,8 @@ window.pin = (function () {
   var ACTIVE_PIN_CLASS = 'pin--active';
   var PIN_WIDTH = 56; // px
   var PIN_HEIGHT = 75; // px
+  var MAIN_PIN_WIDTH = 75;
+  var MAIN_PIN_HEIGHT = 94;
   var AVATAR_WIDTH = 40; // px
   var AVATAR_HEIGHT = 40; // px
 
@@ -70,8 +72,36 @@ window.pin = (function () {
     }
   };
 
+  var coordinations = {
+    offsetLeft: 0,
+    offsetTop: 0,
+    clientX: 0,
+    clientY: 0,
+
+    getXPositionOnMap: function () {
+      return coordinations.offsetLeft + Math.round(MAIN_PIN_WIDTH / 2);
+    },
+
+    getYPositionOnMap: function () {
+      return coordinations.offsetTop + MAIN_PIN_HEIGHT;
+    },
+
+    onUpdate: function () {},
+
+    update: function (offsetLeft, offsetTop, clientX, clientY) {
+      coordinations.offsetLeft = offsetLeft;
+      coordinations.offsetTop = offsetTop;
+      coordinations.clientX = clientX;
+      coordinations.clientY = clientY;
+      if (coordinations.onUpdate) {
+        coordinations.onUpdate(coordinations.getXPositionOnMap(), coordinations.getYPositionOnMap());
+      }
+    }
+  };
+
   return {
     placePinsOnMap: placePinsOnMap,
-    deactivePin: deactivePin
+    deactivePin: deactivePin,
+    coordinations: coordinations
   };
 }());
