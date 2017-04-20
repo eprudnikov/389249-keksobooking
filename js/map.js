@@ -14,30 +14,7 @@
   };
   mainPinCoords.update(mainPin.offsetLeft, mainPin.offsetTop, 0, 0);
 
-  mainPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-    mainPinCoords.update(mainPin.offsetLeft, mainPin.offsetTop, evt.clientX, evt.clientY);
-
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shiftX = mainPinCoords.clientX - moveEvt.clientX;
-      var shiftY = mainPinCoords.clientY - moveEvt.clientY;
-
-      mainPin.style.top = (mainPin.offsetTop - shiftY) + 'px';
-      mainPin.style.left = (mainPin.offsetLeft - shiftX) + 'px';
-
-      mainPinCoords.update(mainPin.offsetLeft, mainPin.offsetTop, moveEvt.clientX, moveEvt.clientY);
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
+  var dragDropHandler = window.pin.dragDropHandler;
+  dragDropHandler.coordinations = mainPinCoords;
+  mainPin.addEventListener('mousedown', dragDropHandler.onMousedownHandler);
 }());

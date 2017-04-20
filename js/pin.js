@@ -99,9 +99,42 @@ window.pin = (function () {
     }
   };
 
+  var dragDropHandler = {
+    coordinations: null,
+
+    onMousedownHandler: function (evt) {
+      evt.preventDefault();
+      var pin = this;
+      dragDropHandler.coordinations.update(pin.offsetLeft, pin.offsetTop, evt.clientX, evt.clientY);
+
+      var onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+
+        var shiftX = dragDropHandler.coordinations.clientX - moveEvt.clientX;
+        var shiftY = dragDropHandler.coordinations.clientY - moveEvt.clientY;
+
+        pin.style.top = (pin.offsetTop - shiftY) + 'px';
+        pin.style.left = (pin.offsetLeft - shiftX) + 'px';
+
+        dragDropHandler.coordinations.update(pin.offsetLeft, pin.offsetTop, moveEvt.clientX, moveEvt.clientY);
+      };
+
+      var onMouseUp = function (upEvt) {
+        upEvt.preventDefault();
+
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    }
+  };
+
   return {
     placePinsOnMap: placePinsOnMap,
     deactivePin: deactivePin,
-    coordinations: coordinations
+    coordinations: coordinations,
+    dragDropHandler: dragDropHandler
   };
 }());
