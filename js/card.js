@@ -43,7 +43,7 @@ window.card = (function () {
   function closeCard() {
     document.removeEventListener('keydown', keydownEscHandler);
     offerDialog.style.display = 'none';
-    window.pin.deactivePin();
+    window.pin.deactivatePin();
   }
 
   var enterKeydownCloseButtonHandler = function (evt) {

@@ -7,7 +7,7 @@
 
   var mainPin = document.body.querySelector('.pin__main');
   var addressField = document.body.querySelector('#address');
-  var mainPinCoords = window.pin.coordinations;
+  var mainPinCoords = window.pin.coordinates;
 
   mainPinCoords.onUpdate = function (x, y) {
     addressField.value = 'x: ' + x + ', y: ' + y;
@@ -15,6 +15,6 @@
   mainPinCoords.update(mainPin.offsetLeft, mainPin.offsetTop, 0, 0);
 
   var dragDropHandler = window.pin.dragDropHandler;
-  dragDropHandler.coordinations = mainPinCoords;
+  dragDropHandler.coordinates = mainPinCoords;
   mainPin.addEventListener('mousedown', dragDropHandler.onMousedownHandler);
 }());

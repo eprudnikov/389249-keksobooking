@@ -65,58 +65,58 @@ window.pin = (function () {
     activePin = pin;
   }
 
-  var deactivePin = function () {
+  var deactivatePin = function () {
     if (activePin) {
       activePin.classList.remove(ACTIVE_PIN_CLASS);
       activePin = null;
     }
   };
 
-  var coordinations = {
+  var coordinates = {
     offsetLeft: 0,
     offsetTop: 0,
     clientX: 0,
     clientY: 0,
 
     getXPositionOnMap: function () {
-      return coordinations.offsetLeft + Math.round(MAIN_PIN_WIDTH / 2);
+      return coordinates.offsetLeft + Math.round(MAIN_PIN_WIDTH / 2);
     },
 
     getYPositionOnMap: function () {
-      return coordinations.offsetTop + MAIN_PIN_HEIGHT;
+      return coordinates.offsetTop + MAIN_PIN_HEIGHT;
     },
 
     onUpdate: function () {},
 
     update: function (offsetLeft, offsetTop, clientX, clientY) {
-      coordinations.offsetLeft = offsetLeft;
-      coordinations.offsetTop = offsetTop;
-      coordinations.clientX = clientX;
-      coordinations.clientY = clientY;
-      if (coordinations.onUpdate) {
-        coordinations.onUpdate(coordinations.getXPositionOnMap(), coordinations.getYPositionOnMap());
+      coordinates.offsetLeft = offsetLeft;
+      coordinates.offsetTop = offsetTop;
+      coordinates.clientX = clientX;
+      coordinates.clientY = clientY;
+      if (coordinates.onUpdate) {
+        coordinates.onUpdate(coordinates.getXPositionOnMap(), coordinates.getYPositionOnMap());
       }
     }
   };
 
   var dragDropHandler = {
-    coordinations: null,
+    coordinates: null,
 
     onMousedownHandler: function (evt) {
       evt.preventDefault();
       var pin = this;
-      dragDropHandler.coordinations.update(pin.offsetLeft, pin.offsetTop, evt.clientX, evt.clientY);
+      dragDropHandler.coordinates.update(pin.offsetLeft, pin.offsetTop, evt.clientX, evt.clientY);
 
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
 
-        var shiftX = dragDropHandler.coordinations.clientX - moveEvt.clientX;
-        var shiftY = dragDropHandler.coordinations.clientY - moveEvt.clientY;
+        var shiftX = dragDropHandler.coordinates.clientX - moveEvt.clientX;
+        var shiftY = dragDropHandler.coordinates.clientY - moveEvt.clientY;
 
         pin.style.top = (pin.offsetTop - shiftY) + 'px';
         pin.style.left = (pin.offsetLeft - shiftX) + 'px';
 
-        dragDropHandler.coordinations.update(pin.offsetLeft, pin.offsetTop, moveEvt.clientX, moveEvt.clientY);
+        dragDropHandler.coordinates.update(pin.offsetLeft, pin.offsetTop, moveEvt.clientX, moveEvt.clientY);
       };
 
       var onMouseUp = function (upEvt) {
@@ -133,8 +133,8 @@ window.pin = (function () {
 
   return {
     placePinsOnMap: placePinsOnMap,
-    deactivePin: deactivePin,
-    coordinations: coordinations,
+    deactivatePin: deactivatePin,
+    coordinates: coordinates,
     dragDropHandler: dragDropHandler
   };
 }());
