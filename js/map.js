@@ -7,14 +7,14 @@
 
   var mainPin = document.body.querySelector('.pin__main');
   var addressField = document.body.querySelector('#address');
-  var mainPinCoords = window.pin.coordinates;
+  var mainPinCoordinates = window.pin.coordinates;
 
-  mainPinCoords.onUpdate = function (x, y) {
+  mainPinCoordinates.onUpdate = function (x, y) {
     addressField.value = 'x: ' + x + ', y: ' + y;
   };
-  mainPinCoords.update(mainPin.offsetLeft, mainPin.offsetTop, 0, 0);
+  mainPinCoordinates.update(mainPin.offsetLeft, mainPin.offsetTop, 0, 0);
 
   var dragDropHandler = window.pin.dragDropHandler;
-  dragDropHandler.coordinates = mainPinCoords;
+  dragDropHandler.coordinates = mainPinCoordinates;
   mainPin.addEventListener('mousedown', dragDropHandler.onMousedownHandler);
 }());
