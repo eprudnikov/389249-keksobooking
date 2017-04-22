@@ -17,7 +17,7 @@ window.pin = (function () {
 
     var avatar = activePin.childNodes[0].src;
     var author = window.data.findAuthor(avatar);
-    window.card.openCard(author);
+    window.showCard(author);
   };
 
   var enterKeydownPinHandler = function (evt) {
@@ -26,7 +26,7 @@ window.pin = (function () {
 
       var avatar = activePin.childNodes[0].src;
       var author = window.data.findAuthor(avatar);
-      window.card.openCard(author);
+      window.showCard(author);
     }
   };
 
