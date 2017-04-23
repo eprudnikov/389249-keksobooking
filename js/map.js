@@ -1,7 +1,11 @@
 'use strict';
 
 (function () {
+  var URL_DATA = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
 
+  window.load(URL_DATA, function (data) {
+    window.console.log(data);
+  });
   window.pin.placePinsOnMap(window.data.authors);
   window.showCard(window.data.authors[0]);
 
