@@ -2,11 +2,20 @@
 
 (function () {
   var URL_DATA = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
+  var OFFERS_TO_SHOW = 3;
+
+  function getRandomNumber(min, max) {
+    return min + Math.round(Math.random() * (max - min));
+  }
 
   window.load(URL_DATA, function (data) {
+    var limitOfRandomOffers = data.length < OFFERS_TO_SHOW ? 0 : data.length - 1 - OFFERS_TO_SHOW;
+    var startOfRandomOrders = getRandomNumber(0, limitOfRandomOffers);
+
     window.data.authors = data;
-    window.pin.placePinsOnMap(data);
-    window.showCard(data[0]);
+    var randomOffers = data.slice(startOfRandomOrders, startOfRandomOrders + OFFERS_TO_SHOW);
+    window.pin.placePinsOnMap(randomOffers);
+    window.showCard(randomOffers[0]);
   });
 
   var mainPin = document.body.querySelector('.pin__main');
