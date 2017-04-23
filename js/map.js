@@ -12,7 +12,7 @@
     var limitOfRandomOffers = data.length < OFFERS_TO_SHOW ? 0 : data.length - 1 - OFFERS_TO_SHOW;
     var startOfRandomOrders = getRandomNumber(0, limitOfRandomOffers);
 
-    window.data.authors = data;
+    window.data.setAuthors(data);
     var randomOffers = data.slice(startOfRandomOrders, startOfRandomOrders + OFFERS_TO_SHOW);
     window.pin.placePinsOnMap(randomOffers);
     window.showCard(randomOffers[0]);
