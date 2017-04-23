@@ -3,8 +3,8 @@
 window.load = (function () {
   var DEFAULT_ERROR_MESSAGE = 'Произошла ошибка при попытке получить данные';
 
-  var onErrorDefault = function (message, code) {
-    message = message || DEFAULT_ERROR_MESSAGE;
+  var onErrorDefault = function (xhr) {
+    var message = xhr.statusText || DEFAULT_ERROR_MESSAGE;
     window.showError(message);
   };
 
@@ -19,13 +19,16 @@ window.load = (function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else {
-        onError(xhr.statusText, xhr.status);
+        onError(xhr);
       }
     });
 
     xhr.addEventListener('error', onError);
     xhr.addEventListener('timeout', function () {
-      onError('Время ожидания ответа от сервера истекло');
+      var timeoutXhr = {
+        statusText: 'Время ожидания ответа от сервера истекло'
+      };
+      onError(timeoutXhr);
     });
 
     xhr.open('GET', url);
