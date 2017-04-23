@@ -4,12 +4,12 @@ window.load = (function () {
   var DEFAULT_ERROR_MESSAGE = 'Произошла ошибка при попытке получить данные';
 
   var onErrorDefault = function (message, code) {
-    message = message ? message : DEFAULT_ERROR_MESSAGE;
+    message = message || DEFAULT_ERROR_MESSAGE;
     window.showError(message);
   };
 
   return function (url, onSuccess, onError) {
-    onError = onError ? onError : onErrorDefault;
+    onError = typeof onError === 'function' ? onError : onErrorDefault;
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
