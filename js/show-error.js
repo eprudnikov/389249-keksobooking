@@ -5,6 +5,6 @@ window.showError = (function () {
     var errorElement = document.body.querySelector('.error');
     var messageElement = errorElement.querySelector('.error__message');
     messageElement.innerText = text;
-    errorElement.style.display = 'block';
+    errorElement.classList.remove('hidden');
   };
 }());
