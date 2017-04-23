@@ -8,14 +8,19 @@
     return min + Math.round(Math.random() * (max - min));
   }
 
+  window.card.closeCard(); // close a card which is open by default
+
   window.load(URL_DATA, function (data) {
-    var limitOfRandomOffers = data.length < OFFERS_TO_SHOW ? 0 : data.length - 1 - OFFERS_TO_SHOW;
-    var startOfRandomOrders = getRandomNumber(0, limitOfRandomOffers);
+    var limitOfRandomOffers = data.length < OFFERS_TO_SHOW ? data.length : data.length - 1 - OFFERS_TO_SHOW;
+    var startOfRandomOrders = limitOfRandomOffers <= OFFERS_TO_SHOW ? 0 : getRandomNumber(0, limitOfRandomOffers);
 
     window.data.setAuthors(data);
     var randomOffers = data.slice(startOfRandomOrders, startOfRandomOrders + OFFERS_TO_SHOW);
     window.pin.placePinsOnMap(randomOffers);
-    window.showCard(randomOffers[0]);
+
+    if (randomOffers.length > 0) {
+      window.showCard(randomOffers[0]);
+    }
   });
 
   var mainPin = document.body.querySelector('.pin__main');
