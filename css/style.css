@@ -655,3 +655,15 @@ select option:hover {
 .rounded {
     border-radius: 50%;
 }
+
+.error {
+  max-width: 700px;
+  margin: 10px auto 0;
+}
+
+.error__message {
+  display: block;
+  text-align: center;
+  color: red;
+  font-size: 18px;
+}

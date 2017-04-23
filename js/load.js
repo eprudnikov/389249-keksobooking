@@ -5,7 +5,11 @@ window.load = (function () {
 
   var onErrorDefault = function (message, code) {
     message = message ? message : DEFAULT_ERROR_MESSAGE;
-    window.console.log('Too bad (' + code + '): ' + message);
+
+    var errorElement = document.body.querySelector('.error');
+    var messageElement = errorElement.querySelector('.error__message');
+    messageElement.innerText = message;
+    errorElement.style.display = 'block';
   };
 
   return function (url, onSuccess, onError) {
@@ -25,7 +29,7 @@ window.load = (function () {
 
     xhr.addEventListener('error', onError);
     xhr.addEventListener('timeout', function () {
-      onError('Время ожидания ответа от сервера истекло.');
+      onError('Время ожидания ответа от сервера истекло');
     });
 
     xhr.open('GET', url);
