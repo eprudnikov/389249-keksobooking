@@ -5,11 +5,7 @@ window.load = (function () {
 
   var onErrorDefault = function (message, code) {
     message = message ? message : DEFAULT_ERROR_MESSAGE;
-
-    var errorElement = document.body.querySelector('.error');
-    var messageElement = errorElement.querySelector('.error__message');
-    messageElement.innerText = message;
-    errorElement.style.display = 'block';
+    window.showError(message);
   };
 
   return function (url, onSuccess, onError) {
