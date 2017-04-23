@@ -1,114 +1,20 @@
 'use strict';
 
-window.constants = {
-  ENTER_KEY_CODE: 13,
-  ESC_KEY_CODE: 27,
-  MIN_X_POSITION: 300,
-  MAX_X_POSITION: 900,
-  MIN_Y_POSITION: 100,
-  MAX_Y_POSITION: 500
-};
-
 window.data = (function () {
-  var TITLES = [
-    'Большая уютная квартира',
-    'Маленькая неуютная квартира',
-    'Огромный прекрасный дворец',
-    'Маленький ужасный дворец',
-    'Красивый гостевой домик',
-    'Некрасивый негостеприимный домик',
-    'Уютное бунгало далеко от моря',
-    'Неуютное бунгало по колено в воде'];
-  var CHECKIN_OUT_TIMES = ['12:00', '13:00', '14:00'];
-  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var TYPES = ['flat', 'house', 'bungalo'];
-
-  var authors;
-
-  function generateRandomNumber(min, max) {
-    return Math.round(Math.random() * (max - min) + min);
-  }
-
-  function getRandomElement(array) {
-    var randomIndex = generateRandomNumber(0, array.length - 1);
-    return array[randomIndex];
-  }
-
-  function popRandomElement(array) {
-    do {
-      var randomIndex = generateRandomNumber(0, array.length - 1);
-      var randomElement = array[randomIndex];
-      array[randomIndex] = null;
-    } while (!randomElement);
-
-    return randomElement;
-  }
-
-  function generateRandomArray(baseArray) {
-    var elementsCount = generateRandomNumber(0, baseArray.length - 1);
-    var randomArray = [];
-
-    for (var i = 0; i < elementsCount; i++) {
-      for (;;) {
-        var randomElement = getRandomElement(baseArray);
-        if (randomArray.indexOf(randomElement) === -1) {
-          randomArray.push(randomElement);
-          break;
-        }
-      }
-    }
-
-    return randomArray;
-  }
-
-  function generateAuthors() {
-    var authorsCount = 8;
-    var uniqueTitles = TITLES.slice(0); // uniqueTitles array going to be modified
-    var result = [];
-    for (var i = 0; i < authorsCount; i++) {
-      var x = generateRandomNumber(window.constants.MIN_X_POSITION, window.constants.MAX_X_POSITION);
-      var y = generateRandomNumber(window.constants.MIN_Y_POSITION, window.constants.MAX_Y_POSITION);
-      var rooms = generateRandomNumber(1, 5);
-
-      result.push({
-        author: {
-          avatar: 'img/avatars/user0' + (i + 1) + '.png'
-        },
-        offer: {
-          title: popRandomElement(uniqueTitles),
-          address: x + ', ' + y,
-          price: generateRandomNumber(1000, 1000000),
-          type: getRandomElement(TYPES, false),
-          rooms: rooms,
-          guests: generateRandomNumber(rooms, rooms * 2),
-          checkin: getRandomElement(CHECKIN_OUT_TIMES),
-          checkout: getRandomElement(CHECKIN_OUT_TIMES),
-          features: generateRandomArray(FEATURES),
-          description: '',
-          photos: []
-        },
-        location: {
-          x: x,
-          y: y
-        }
-      });
-    }
-
-    authors = result;
-    return result;
-  }
-
   var findAuthor = function (avatar) {
-    for (var i = 0; authors && i < authors.length; i++) {
-      if (avatar.endsWith(authors[i].author.avatar)) {
-        return authors[i];
+    if (!window.data.authors) {
+      throw new Error('Объявления недоступны');
+    }
+    for (var i = 0; i < window.data.authors.length; i++) {
+      if (avatar.endsWith(window.data.authors[i].author.avatar)) {
+        return window.data.authors[i];
       }
     }
     return null;
   };
 
   return {
-    authors: generateAuthors(),
+    authors: null,
     findAuthor: findAuthor
   };
 }());
