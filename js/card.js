@@ -31,6 +31,7 @@ window.card = (function () {
   closeButton.addEventListener('keydown', enterKeydownCloseButtonHandler);
 
   return {
-    keydownEscHandler: keydownEscHandler
+    keydownEscHandler: keydownEscHandler,
+    closeCard: closeCard
   };
 }());

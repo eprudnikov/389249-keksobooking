@@ -1,9 +1,21 @@
 'use strict';
 
 (function () {
+  var URL_DATA = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
 
-  window.pin.placePinsOnMap(window.data.authors);
-  window.showCard(window.data.authors[0]);
+  window.card.closeCard(); // close a card which is open by default
+
+  window.load(URL_DATA, function (data) {
+    window.data.setAuthors(data);
+
+    var offersToShow = 3;
+    var firstOffers = data.slice(0, offersToShow);
+    window.pin.placePinsOnMap(firstOffers);
+
+    if (firstOffers.length > 0) {
+      window.showCard(firstOffers[0]);
+    }
+  });
 
   var mainPin = document.body.querySelector('.pin__main');
   var addressField = document.body.querySelector('#address');
