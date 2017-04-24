@@ -4,49 +4,56 @@
   var ANY = 'any';
   var PRICE_LOW = 10000;
   var PRICE_HIGH = 50000;
+  var VALUE_LOW = 'low';
+  var VALUE_MIDDLE = 'middle';
+  var VALUE_HIGH = 'high';
 
   var filterPanel = document.body.querySelector('.tokyo__filters');
-  var typeSelect = filterPanel.querySelector('#housing_type');
-  var priceSelect = filterPanel.querySelector('#housing_price');
-  var roomNumberSelect = filterPanel.querySelector('#housing_room-number');
-  var guestsNumberSelect = filterPanel.querySelector('#housing_guests-number');
 
-  function typeFilter(author) {
-    var selectedType = typeSelect.options[typeSelect.selectedIndex].value;
-    return !selectedType || selectedType === ANY || author.offer.type === selectedType;
+  function createCommonFilter(filterSelector, authorChecker) {
+    var selectElement = filterPanel.querySelector(filterSelector);
+    return function (author) {
+      var selectedValue = selectElement.options[selectElement.selectedIndex].value;
+      return !selectedValue || selectedValue === ANY || authorChecker(author, selectedValue);
+    };
   }
 
-  function priceFilter(author) {
+  var typeFilter = createCommonFilter('#housing_type', function (author, selectedValue) {
+    return author.offer.type === selectedValue;
+  });
+  var roomNumberFilter = createCommonFilter('#housing_room-number', function (author, selectedValue) {
+    return author.offer.rooms === +selectedValue;
+  });
+  var guestsNumberFilter = createCommonFilter('#housing_guests-number', function (author, selectedValue) {
+    return author.offer.guests === +selectedValue;
+  });
+
+  var priceSelect = filterPanel.querySelector('#housing_price');
+  var priceFilter = function (author) {
     var selectedPrice = priceSelect.options[priceSelect.selectedIndex].value;
     switch (selectedPrice.toLowerCase()) {
-      case 'low':
+      case VALUE_LOW:
         return author.offer.price < PRICE_LOW;
-      case 'middle':
+      case VALUE_MIDDLE:
         return PRICE_LOW <= author.offer.price && author.offer.price <= PRICE_HIGH;
-      case 'high':
+      case VALUE_HIGH:
         return author.offer.price > PRICE_HIGH;
     }
     return true;
-  }
+  };
 
-  function roomNumberFilter(author) {
-    var selectedRoomNumber = roomNumberSelect.options[roomNumberSelect.selectedIndex].value;
-    return !selectedRoomNumber || selectedRoomNumber === ANY || author.offer.rooms === +selectedRoomNumber;
-  }
-
-  function guestsNumberFilter(author) {
-    var selectedGuestsNumber = guestsNumberSelect.options[guestsNumberSelect.selectedIndex].value;
-    return !selectedGuestsNumber || selectedGuestsNumber === ANY || author.offer.guests === +selectedGuestsNumber;
+  function createFeatureFilter() {
+    var featureCheckboxes = filterPanel.querySelectorAll('input[name="feature"]');
+    for (var i = 0; i < featureCheckboxes.length; i++) {
+      filters.push(function (author) {
+        var feature = this.value;
+        return !this.checked || author.offer.features.includes(feature);
+      }.bind(featureCheckboxes[i])); // I do not use featureCheckboxes[i] in closure because it's mutable
+    }
   }
 
   var filters = [typeFilter, priceFilter, roomNumberFilter, guestsNumberFilter];
-  var featureCheckboxes = filterPanel.querySelectorAll('input[name="feature"]');
-  for (var i = 0; i < featureCheckboxes.length; i++) {
-    filters.push(function (author) {
-      var feature = this.value;
-      return !this.checked || author.offer.features.includes(feature);
-    }.bind(featureCheckboxes[i]));
-  }
+  filters.concat(createFeatureFilter());
 
   function filterAuthors() {
     var result = window.data.authors.slice(0);
