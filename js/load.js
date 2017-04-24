@@ -1,10 +1,9 @@
 'use strict';
 
 window.load = (function () {
-  var DEFAULT_ERROR_MESSAGE = 'Произошла ошибка при попытке получить данные';
-
   var onErrorDefault = function (xhr) {
-    var message = xhr.statusText || DEFAULT_ERROR_MESSAGE;
+    var defaultErrorMessage = 'Произошла ошибка при попытке получить данные';
+    var message = xhr.statusText || defaultErrorMessage;
     window.showError(message);
   };
 
