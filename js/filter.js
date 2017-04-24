@@ -49,7 +49,7 @@
   }
   filterPanel.addEventListener('change', function () {
     var filterdAuthors = filterAuthors();
-    window.pin.placePinsOnMap(filterdAuthors);
+    window.pin.redrawPins(filterdAuthors);
 
     window.card.closeCard();
     if (filterdAuthors.length > 0) {

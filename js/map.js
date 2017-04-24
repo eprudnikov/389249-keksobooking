@@ -13,7 +13,7 @@
       return 0.5 - Math.random();
     };
     var firstOffers = data.sort(randomComparator).slice(0, offersToShow);
-    window.pin.placePinsOnMap(firstOffers);
+    window.pin.redrawPins(firstOffers);
 
     if (firstOffers.length > 0) {
       window.showCard(firstOffers[0]);

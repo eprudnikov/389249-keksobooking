@@ -54,7 +54,7 @@ window.pin = (function () {
     });
   }
 
-  var placePinsOnMap = function (authors) {
+  var redrawPins = function (authors) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < authors.length; i++) {
       var pin = renderPin(authors[i]);
@@ -143,7 +143,7 @@ window.pin = (function () {
   };
 
   return {
-    placePinsOnMap: placePinsOnMap, // TODO rename to redrawPins
+    redrawPins: redrawPins,
     deactivatePin: deactivatePin,
     coordinates: coordinates,
     dragDropHandler: dragDropHandler
