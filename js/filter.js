@@ -39,14 +39,23 @@
     return !selectedGuestsNumber || selectedGuestsNumber === ANY || author.offer.guests === +selectedGuestsNumber;
   }
 
+  var filters = [typeFilter, priceFilter, roomNumberFilter, guestsNumberFilter];
+  var featureCheckboxes = filterPanel.querySelectorAll('input[name="feature"]');
+  for (var i = 0; i < featureCheckboxes.length; i++) {
+    filters.push(function (author) {
+      var feature = this.value;
+      return !this.checked || author.offer.features.includes(feature);
+    }.bind(featureCheckboxes[i]));
+  }
+
   function filterAuthors() {
-    var authors = window.data.authors.slice(0);
-    var result = authors.filter(typeFilter);
-    result = result.filter(priceFilter);
-    result = result.filter(roomNumberFilter);
-    result = result.filter(guestsNumberFilter);
+    var result = window.data.authors.slice(0);
+    for (var j = 0; j < filters.length; j++) {
+      result = result.filter(filters[j]);
+    }
     return result;
   }
+
   filterPanel.addEventListener('change', function () {
     var filterdAuthors = filterAuthors();
     window.pin.redrawPins(filterdAuthors);
@@ -56,5 +65,4 @@
       window.showCard(filterdAuthors[0]);
     }
   });
-  // TODO implement filtering by features
 }());
