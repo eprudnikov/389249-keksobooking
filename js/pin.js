@@ -45,6 +45,15 @@ window.pin = (function () {
     return div;
   }
 
+  function removePinsFromMapExceptMain(map) {
+    var mainPinClass = 'pin__main';
+    map.querySelectorAll('.pin').forEach(function (element) {
+      if (!element.classList.contains(mainPinClass)) {
+        map.removeChild(element);
+      }
+    });
+  }
+
   var placePinsOnMap = function (authors) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < authors.length; i++) {
@@ -54,7 +63,9 @@ window.pin = (function () {
 
       fragment.appendChild(pin);
     }
-    document.querySelector('.tokyo__pin-map').appendChild(fragment);
+    var map = document.querySelector('.tokyo__pin-map');
+    removePinsFromMapExceptMain(map);
+    map.appendChild(fragment);
   };
 
   function activatePin(pin) {
@@ -132,7 +143,7 @@ window.pin = (function () {
   };
 
   return {
-    placePinsOnMap: placePinsOnMap,
+    placePinsOnMap: placePinsOnMap, // TODO rename to redrawPins
     deactivatePin: deactivatePin,
     coordinates: coordinates,
     dragDropHandler: dragDropHandler
