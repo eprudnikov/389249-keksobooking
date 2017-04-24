@@ -9,7 +9,10 @@
     window.data.setAuthors(data);
 
     var offersToShow = 3;
-    var firstOffers = data.slice(0, offersToShow);
+    var randomComparator = function () {
+      return 0.5 - Math.random();
+    };
+    var firstOffers = data.sort(randomComparator).slice(0, offersToShow);
     window.pin.placePinsOnMap(firstOffers);
 
     if (firstOffers.length > 0) {
