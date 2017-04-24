@@ -56,13 +56,17 @@
     return result;
   }
 
-  filterPanel.addEventListener('change', function () {
-    var filterdAuthors = filterAuthors();
-    window.pin.redrawPins(filterdAuthors);
+  function updatePins() {
+    var filteredAuthors = filterAuthors();
+    window.pin.redrawPins(filteredAuthors);
 
     window.card.closeCard();
-    if (filterdAuthors.length > 0) {
-      window.showCard(filterdAuthors[0]);
+    if (filteredAuthors.length > 0) {
+      window.showCard(filteredAuthors[0]);
     }
+  }
+
+  filterPanel.addEventListener('change', function () {
+    window.debounce(updatePins);
   });
 }());
