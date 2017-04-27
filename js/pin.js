@@ -9,6 +9,10 @@ window.pin = (function () {
   var MAIN_PIN_HEIGHT = 94;
   var AVATAR_WIDTH = 40; // px
   var AVATAR_HEIGHT = 40; // px
+  var MAP_MIN_X_POSITION = 0;
+  var MAP_MAX_X_POSITION = 1200;
+  var MAP_MIN_Y_POSITION = 100;
+  var MAP_MAX_Y_POSITION = 480;
 
   var activePin;
 
@@ -118,16 +122,29 @@ window.pin = (function () {
       var pin = this;
       dragDropHandler.coordinates.update(pin.offsetLeft, pin.offsetTop, evt.clientX, evt.clientY);
 
+      var isInMap = function (x, y) {
+        var leftMapBorder = MAP_MIN_X_POSITION - Math.round(MAIN_PIN_WIDTH / 2);
+        var rightMapBorder = MAP_MAX_X_POSITION - Math.round(MAIN_PIN_WIDTH / 2);
+        var topMapBorder = MAP_MIN_Y_POSITION;
+        var bottomMapBorder = MAP_MAX_Y_POSITION + MAIN_PIN_HEIGHT;
+
+        return leftMapBorder < x && x < rightMapBorder && topMapBorder < y && y < bottomMapBorder;
+      };
+
       var onMouseMove = function (moveEvt) {
         moveEvt.preventDefault();
 
         var shiftX = dragDropHandler.coordinates.clientX - moveEvt.clientX;
         var shiftY = dragDropHandler.coordinates.clientY - moveEvt.clientY;
 
-        pin.style.top = (pin.offsetTop - shiftY) + 'px';
-        pin.style.left = (pin.offsetLeft - shiftX) + 'px';
+        var newOffsetTop = (pin.offsetTop - shiftY);
+        var newOffsetLeft = (pin.offsetLeft - shiftX);
+        if (isInMap(newOffsetLeft, newOffsetTop)) {
+          pin.style.top = newOffsetTop + 'px';
+          pin.style.left = newOffsetLeft + 'px';
 
-        dragDropHandler.coordinates.update(pin.offsetLeft, pin.offsetTop, moveEvt.clientX, moveEvt.clientY);
+          dragDropHandler.coordinates.update(pin.offsetLeft, pin.offsetTop, moveEvt.clientX, moveEvt.clientY);
+        }
       };
 
       var onMouseUp = function (upEvt) {
