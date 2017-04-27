@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.getFilteredAuthors = (function () {
   var ANY = 'any';
   var PRICE_LOW = 10000;
   var PRICE_HIGH = 50000;
@@ -55,7 +55,7 @@
   var filters = [typeFilter, priceFilter, roomNumberFilter, guestsNumberFilter];
   filters.concat(createFeatureFilter());
 
-  function filterAuthors() {
+  function getFilteredAuthors() {
     var result = window.data.authors.slice(0);
     filters.forEach(function (filter) {
       result = result.filter(filter);
@@ -64,7 +64,7 @@
   }
 
   function updatePins() {
-    var filteredAuthors = filterAuthors();
+    var filteredAuthors = getFilteredAuthors();
     window.pin.redrawPins(filteredAuthors);
 
     window.card.closeCard();
@@ -76,4 +76,6 @@
   filterPanel.addEventListener('change', function () {
     window.debounce(updatePins);
   });
+
+  return getFilteredAuthors;
 }());

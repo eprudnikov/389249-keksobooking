@@ -12,7 +12,8 @@
     var randomComparator = function () {
       return 0.5 - Math.random();
     };
-    var firstOffers = data.sort(randomComparator).slice(0, offersToShow);
+    var filteredAuthors = window.getFilteredAuthors();
+    var firstOffers = filteredAuthors.sort(randomComparator).slice(0, offersToShow);
     window.pin.redrawPins(firstOffers);
 
     if (firstOffers.length > 0) {
