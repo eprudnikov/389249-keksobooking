@@ -14,6 +14,7 @@
   var timeSelect = form.querySelector('#time');
   var timeoutSelect = form.querySelector('#timeout');
   window.synchronizeFields(timeSelect, timeoutSelect, [12, 13, 14], setSelectedIndex);
+  window.synchronizeFields(timeoutSelect, timeSelect, [12, 13, 14], setSelectedIndex);
 
   var roomNumberSelect = form.querySelector('#room_number');
   var capacitySelect = form.querySelector('#capacity');
