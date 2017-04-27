@@ -60,13 +60,13 @@ window.pin = (function () {
 
   var redrawPins = function (authors) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < authors.length; i++) {
-      var pin = renderPin(authors[i]);
+    authors.forEach(function (author) {
+      var pin = renderPin(author);
       pin.addEventListener('click', clickPinHandler);
       pin.addEventListener('keydown', enterKeydownPinHandler);
 
       fragment.appendChild(pin);
-    }
+    });
     var map = document.querySelector('.tokyo__pin-map');
     removePinsFromMapExceptMain(map);
     map.appendChild(fragment);

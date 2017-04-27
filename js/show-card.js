@@ -23,12 +23,12 @@ window.showCard = (function () {
     newPanel.querySelector('.lodge__description').textContent = author.offer.description;
 
     var featuresBlock = newPanel.querySelector('.lodge__features');
-    for (var i = 0; i < author.offer.features.length; i++) {
+    author.offer.features.forEach(function (feature) {
       var span = document.createElement('span');
       span.classList.add('feature__image');
-      span.classList.add('feature__image--' + author.offer.features[i]);
+      span.classList.add('feature__image--' + feature);
       featuresBlock.appendChild(span);
-    }
+    });
 
     offerDialog.querySelector('.dialog__title > img').src = author.author.avatar;
 

@@ -44,12 +44,12 @@
 
   function createFeatureFilter() {
     var featureCheckboxes = filterPanel.querySelectorAll('input[name="feature"]');
-    for (var i = 0; i < featureCheckboxes.length; i++) {
+    featureCheckboxes.forEach(function (checkbox) {
       filters.push(function (author) {
-        var feature = this.value;
-        return !this.checked || author.offer.features.includes(feature);
-      }.bind(featureCheckboxes[i])); // I do not use featureCheckboxes[i] in closure because it's mutable
-    }
+        var feature = checkbox.value;
+        return !checkbox.checked || author.offer.features.includes(feature);
+      });
+    });
   }
 
   var filters = [typeFilter, priceFilter, roomNumberFilter, guestsNumberFilter];
@@ -57,9 +57,9 @@
 
   function filterAuthors() {
     var result = window.data.authors.slice(0);
-    for (var j = 0; j < filters.length; j++) {
-      result = result.filter(filters[j]);
-    }
+    filters.forEach(function (filter) {
+      result = result.filter(filter);
+    });
     return result;
   }
 
